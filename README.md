@@ -340,6 +340,7 @@ gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
 
 # COMMANDS:
 
+```bash
 ssh username@host -p PORT
 ls: Lists files and directories in the current directory.
 cd [directory]: Changes the current directory to the specified one.
@@ -383,3 +384,4 @@ Unix ‘job control’:
 - fg: Brings a background job to the foreground.
 - jobs: Lists active jobs.
 - &: Runs a command in the background.
+```
