@@ -338,6 +338,7 @@ gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
 ```
 
 - Level 24-25:
+
 ```bash
 nc localhost 30002
 mkdir /tmp/brute
@@ -353,11 +354,12 @@ ls # to confirm that the script was created
 chmod +x script.sh #giving permissions
 ./script.sh #running script
 cat list.txt #if you want to see the script running inside the txt file
-cat list.txt | nc localhost 30002 #to get the level 25 password 
+cat list.txt | nc localhost 30002 #to get the level 25 password
 iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
 ```
 
 - Level 25-26:
+
 ```bash
 #try to connect using the private key found in level 25
 ssh -i /tmp/bandit26.sshkey bandit26@localhost -p 2220
@@ -374,8 +376,93 @@ s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
 ```
 
 - Level 26-27:
-```bash
 
+```bash
+#still inside level26's bash, check the directories:
+ls
+./bandi27-do whoami #to check who is the user allowed to run the file
+./bandit27-do cat /etc/bandit_pass/bandit27
+upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+```
+
+- Level 27-28:
+
+```bash
+#create a temporary file to clone the repo
+mkdir /tmp/git_level27
+cd /tmp/git_level27
+git clone ssh://bandit27-git@localhost:2220/home/bandit27-git/repo
+ls
+cd repo
+cat README
+Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+```
+
+- Level 28-29:
+
+```bash
+#do the same initial steps of level 27
+mkdir /tmp/git_level28
+cd /tmp/git_level28
+git clone ssh://bandit28-git@localhost:2220/home/bandit28-git/repo
+ls
+cd repo
+cat README.md
+#you will notice that the password is hashed, so use git checkout to access older commits
+git log #to see the older commits
+git checkout 229f6001e1 #this commit has the password before being enctypted
+ls
+cat README.md
+4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+```
+
+- Level 29-30:
+  in this level is the same idea of 29 but instead of change the commit, you have to change the branch
+
+```bash
+mkdir /tmp/git_level29
+cd /tmp/git_level29
+git clone ssh://bandit29-git@localhost:2220/home/bandit29-git/repo
+git branch -a #this command allows to see remote branchs that you cant see locally
+git checkout dev
+cat README.md
+qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+```
+
+- Level 30-31:
+  in this level there is no different branchs or commits. This time we have to use git tag
+
+```bash
+mkdir /tmp/git_level30
+cd /tmp/git_level30
+git clone ssh://bandit30-git@localhost:2220/home/bandit30-git/repo
+git tag
+git show secret
+fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+```
+
+- Level 31-32:
+  this level we have to create a file and do a git push. The challenge is that we are not able to push the key.txt file because the .gitignore contains '\*.txt', so all file with .txt extension won't be commited. To change that, we have to remove the .gitignore file.
+
+```bash
+mkdir /tmp/git_level31
+cd /tmp/git_level31
+git clone ssh://bandit31-git@localhost:2220/home/bandit31-git/repo
+nano key.txt # create the file and write the content
+rm .gitignore
+git add key.txt
+git commit -m 'getting password level 31'
+git push
+3O9RfhqyAlVBEZpVb6LYStshZoqoSx5K
+```
+
+- Level 32-33:
+  this level we will be using the Born Shell to get the password
+
+```bash
+$0 #this allows to run commands in the shell
+cat /etc/bandit_pass/bandit33
+tQdtbs5D5i2vJwkO8mEyYEyTL8izoeJ0
 ```
 
 # COMMANDS:
